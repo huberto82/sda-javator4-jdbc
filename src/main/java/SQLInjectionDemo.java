@@ -8,6 +8,11 @@ public class SQLInjectionDemo {
         Statement st = con.createStatement();
         printAll(st);
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Szukanie podatne na SQL injection");
+        System.out.println("Podaj id szukanego user'a");
+        System.out.println("Spróbuj wpisać zmiast liczby frazę: 1 or 1 = 1");
+        printWithSqlInjection(con, scanner.nextLine());
+        System.out.println("Bezpieczne szukanie user'a z użyciem prepared statement");
         System.out.println("Wpisz id user'a:");
         if (scanner.hasNextInt()) {
             int id = scanner.nextInt();
@@ -15,6 +20,7 @@ public class SQLInjectionDemo {
         } else {
             System.out.println("Wpisz poprawną wartość całkowitą!!!");
         }
+        System.out.println("Szukanie na podstawie loginu. Możesz użyć symboli specjalnych: % i ?");
         System.out.println("Wpisz login:");
         if (scanner.hasNext()) {
             String login = scanner.next();
@@ -38,6 +44,15 @@ public class SQLInjectionDemo {
         PreparedStatement st = con.prepareStatement("SELECT * FROM user where id = ?");
         //wstawienie parametru w miejscu pierwszego znaku zapytania
         st.setInt(1, id);
+        ResultSet set = st.executeQuery();
+        while (set.next()){
+            System.out.println(set.getString("login"));
+        }
+    }
+
+    private static void printWithSqlInjection(Connection con, String idStr) throws SQLException {
+        //parametr zapytania doklejamy do łańcucha zapytania
+        PreparedStatement st = con.prepareStatement("SELECT * FROM user where id = " + idStr);
         ResultSet set = st.executeQuery();
         while (set.next()){
             System.out.println(set.getString("login"));
