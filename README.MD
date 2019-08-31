@@ -1,5 +1,5 @@
-#Projekt z przykładami wykorzystania JDBC 
-##Kurs SDA javator4
+# Projekt z przykładami wykorzystania JDBC 
+## Kurs SDA javator4
 
 
 
